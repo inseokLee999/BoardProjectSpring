@@ -1,0 +1,50 @@
+package org.choongang.member;
+
+import lombok.Builder;
+import lombok.Data;
+import org.choongang.member.entities.Member;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+
+@Data
+@Builder
+public class MemberInfo implements UserDetails {
+
+    private String email;
+    private String password;
+    private Collection<? extends GrantedAuthority> authorities;
+    private Member member;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {//계정 유효기간
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {//계정 잠금(정지)
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {//비번 교체
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {//계정 탈퇴 여부
+        return UserDetails.super.isEnabled();
+    }
+}
