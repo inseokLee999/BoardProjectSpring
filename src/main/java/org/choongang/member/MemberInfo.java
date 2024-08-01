@@ -35,16 +35,16 @@ public class MemberInfo implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {//계정 잠금(정지)
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {//비번 교체
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {//계정 탈퇴 여부
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

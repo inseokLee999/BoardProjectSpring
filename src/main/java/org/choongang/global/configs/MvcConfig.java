@@ -10,6 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableJpaAuditing
 public class MvcConfig implements WebMvcConfigurer {
+    /*
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("front/index");
+    }
+    */
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
