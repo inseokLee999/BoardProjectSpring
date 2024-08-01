@@ -6,12 +6,13 @@
     <a th:href="@{/}">
         <button type="submit" th:text="#{메인화면}"></button>
     </a>
-    <a th:href="@{/member/login}">
-    <button type="submit" th:text="#{로그인}"></button>
-</a>
-    <a th:href="@{/member/join}">
-        <button type="submit" th:text="#{회원가입}"></button>
-    </a>
+    <th:block sec:authorize="isAnonymous()">
+        <a th:href="@{/member/login}">
+            <button type="submit" th:text="#{로그인}"></button>
+        </a>
+        <a th:href="@{/member/join}">
+            <button type="submit" th:text="#{회원가입}"></button>
+        </a>
     </th:block>
     <th:block sec:authorize="isAuthenticated()">
         <span th:text="${#messages.msg('LOGIN_MSG',loggedMember.userName,loggedMember.email)}"/><br>

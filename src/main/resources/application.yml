@@ -1,5 +1,5 @@
 server:
-  port: 3000
+  port: 3001
 
 spring:
   # 데이터 베이스 설정
@@ -31,11 +31,11 @@ spring:
       max-file-size: 20MB
       max-request-size: 60MB
       file-size-threshold: 30MB
-# 파일 업로드 경로 설정
-file:
-  upload:
-    path: D:/uploads
-    url: /upload/
+## 파일 업로드 경로 설정
+#file:
+#  upload:
+#    path: D:/uploads
+#    url: /upload/
 #로거 설정
 logging:
   level:
