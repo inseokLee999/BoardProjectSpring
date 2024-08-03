@@ -40,16 +40,18 @@ public class SecurityConfig {
         /* 인가(접근 통제) 설정 S*/
         http.authorizeRequests(authorizeRequests -> {
             authorizeRequests.requestMatchers("/mypage/**").authenticated()//회원 전용
-                    .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                    .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")//예외 발생
                     .anyRequest().permitAll();
         });
         http.exceptionHandling(c -> {
-            c.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+            c.authenticationEntryPoint(new MemberAuthenticationEntryPoint())//예외 가
                     .accessDeniedHandler((req, res, e) -> {
                         res.sendError(HttpStatus.UNAUTHORIZED.value());
                     });
         });
         /* 인가(접근 통제) 설정 E*/
+        //iframe 자원 출처를 같은 서버 자원으로 한정
+        http.headers(c -> c.frameOptions(f -> f.sameOrigin()));
         return http.build();
     }
 

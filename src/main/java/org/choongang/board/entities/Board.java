@@ -22,5 +22,4 @@ public class Board extends BaseMemberEntity { // 게시판 설정
     @Column(length = 60, nullable = false)
     private String bName;
 
-
 }

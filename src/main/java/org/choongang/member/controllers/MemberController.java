@@ -80,6 +80,7 @@ public class MemberController implements ExceptionProcessor {
     @GetMapping("/test")
     public void test(Principal principal) {
         log.info("로그인 아이디 : {}", principal.getName());
+        log.info("{}",principal);
     }
 
     @ResponseBody

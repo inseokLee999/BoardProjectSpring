@@ -20,7 +20,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         if (uri.contains("/admin")) { //관리자 페이지
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         } else {//회원 전용 페이지
-            String qs = request.getQueryString();
+            String qs = request.getQueryString();//쿼리스트링
             String redirectUrl = uri.replace(request.getContextPath(), "");
             redirectUrl = StringUtils.hasText(qs) ? redirectUrl + "?" + qs : redirectUrl;
             response.sendRedirect(request.getContextPath() + "/member/login?redirectUrl=" + redirectUrl);

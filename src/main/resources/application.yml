@@ -32,10 +32,10 @@ spring:
       max-request-size: 60MB
       file-size-threshold: 30MB
 ## 파일 업로드 경로 설정
-#file:
-#  upload:
-#    path: D:/uploads
-#    url: /upload/
+file:
+  upload:
+    path: D:/uploads
+    url: /upload/
 #로거 설정
 logging:
   level:
