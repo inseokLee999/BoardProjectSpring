@@ -13,8 +13,12 @@
     <!--컨트롤러 없이 addViewControllers 사용 시-->
     <th:block layout:fragment="addCss"></th:block>
 
+
     <script th:src="@{/common/js/common.js}"></script>
     <script th:src="@{/mobile/js/common.js}"></script>
+    <script th:if="${addCommonScript != null}" th:each="jsFile : ${addCommonScript}"
+            th:src="@{/common/js/{file}.js(file=${jsFile})}"></script>
+    <th:block layout:fragment="addCommonScript"></th:block>
     <script th:if="${addScript != null}"
             th:each="jsFile:${addScript}" th:src="@{mobile/js/{file}.js(file=${jsFile})}"></script>
     <!--컨트롤러 없이 addViewControllers 사용 시-->
