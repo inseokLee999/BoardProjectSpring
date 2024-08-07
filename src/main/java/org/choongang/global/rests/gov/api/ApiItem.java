@@ -3,7 +3,6 @@ package org.choongang.global.rests.gov.api;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import org.choongang.tour.entities.AreaCode;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 public class ApiItem {
     private String addr1;
     private String addr2;
-    private AreaCode areacode;
+    private String areacode;
     private String booktour;
     private String cat1;
     private String cat2;

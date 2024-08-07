@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,13 +17,11 @@ public class QTourPlace extends EntityPathBase<TourPlace> {
 
     private static final long serialVersionUID = 1498186236L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QTourPlace tourPlace = new QTourPlace("tourPlace");
 
     public final StringPath address = createString("address");
 
-    public final QAreaCode areaCode;
+    public final StringPath areaCode = createString("areaCode");
 
     public final BooleanPath bookTour = createBoolean("bookTour");
 
@@ -59,24 +56,15 @@ public class QTourPlace extends EntityPathBase<TourPlace> {
     public final StringPath title = createString("title");
 
     public QTourPlace(String variable) {
-        this(TourPlace.class, forVariable(variable), INITS);
+        super(TourPlace.class, forVariable(variable));
     }
 
     public QTourPlace(Path<? extends TourPlace> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QTourPlace(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QTourPlace(PathMetadata metadata, PathInits inits) {
-        this(TourPlace.class, metadata, inits);
-    }
-
-    public QTourPlace(Class<? extends TourPlace> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.areaCode = inits.isInitialized("areaCode") ? new QAreaCode(forProperty("areaCode")) : null;
+        super(TourPlace.class, metadata);
     }
 
 }

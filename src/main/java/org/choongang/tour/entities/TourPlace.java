@@ -32,9 +32,8 @@ public class TourPlace extends BaseEntity {
     @Column(length=150)
     private String address;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="areaCode")
-    private AreaCode areaCode;
+    private String areaCode;
 
 
     private boolean bookTour;
