@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.choongang.global.entities.BaseEntity;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Builder
@@ -31,10 +32,10 @@ public class TourPlace extends BaseEntity {
     @Column(length=150)
     private String address;
 
-    @Column(length=5)
-    @ToString.Exclude
-    @OneToMany(fetch = FetchType.LAZY)
-    private String areaCode;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="areaCode")
+    private AreaCode areaCode;
+
 
     private boolean bookTour;
     private Double distance;

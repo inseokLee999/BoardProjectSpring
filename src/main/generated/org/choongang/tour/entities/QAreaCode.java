@@ -23,8 +23,6 @@ public class QAreaCode extends EntityPathBase<AreaCode> {
 
     public final StringPath name = createString("name");
 
-    public final NumberPath<Integer> rNum = createNumber("rNum", Integer.class);
-
     public QAreaCode(String variable) {
         super(AreaCode.class, forVariable(variable));
     }

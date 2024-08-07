@@ -20,6 +20,7 @@ import java.util.UUID;
 @EnableConfigurationProperties(FileProperties.class)
 public class FileUploadService {
     private final FileInfoRepository fileInfoRepository;
+    private final FileInfoService fileInfoService;
     private final FileProperties fileProperties;
 
     public List<FileInfo> upload(MultipartFile[] files, String gid, String location) {
@@ -64,6 +65,7 @@ public class FileUploadService {
                 fileInfoRepository.flush();
             }
         }
+        uploadedFiles.forEach(fileInfoService::addFileInfo);
         return uploadedFiles;
     }
 }
