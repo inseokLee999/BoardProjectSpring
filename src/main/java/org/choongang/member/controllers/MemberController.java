@@ -21,6 +21,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -41,20 +44,17 @@ public class MemberController implements ExceptionProcessor {
 
     @GetMapping("/join")
     public String join(@ModelAttribute RequestJoin form, Model model) {
-        model.addAttribute("addCss", "join");
-//        boolean result = false;
-//        if(!result){
-//            throw new AlertRedirectException("테스트 예외,","/mypage", HttpStatus.BAD_REQUEST);
-//        }
+        commonProcess("join", model);
+
+
         return "front/member/join";
     }
 
     @PostMapping("/join")
     public String joinPs(@Valid RequestJoin form, Errors errors, Model model) {
-//        memberSaveService.save(form);
-        model.addAttribute("addCss", "join");
+        commonProcess("join", model);
         joinValidator.validate(form, errors);
-        errors.getAllErrors().forEach(System.out::println);
+
         if (errors.hasErrors()) {
             return "front/member/join";
         }
@@ -64,7 +64,7 @@ public class MemberController implements ExceptionProcessor {
 
     @GetMapping("/login")
     public String login(@Valid @ModelAttribute RequestLogin form, Errors errors, Model model) {
-        model.addAttribute("addCss", "join");
+        commonProcess("login", model);
         String code = form.getCode();
         if (StringUtils.hasText(code)) {
             errors.reject(code, form.getDefaultMessage());
@@ -76,11 +76,36 @@ public class MemberController implements ExceptionProcessor {
         return "front/member/login";
     }
 
+    /**
+     * 회원 관련 컨트롤러 공통 처리
+     *
+     * @param mode
+     * @param model
+     */
+    private void commonProcess(String mode, Model model) {
+        mode = Objects.requireNonNullElse(mode, "join");
+
+        List<String> addCss = new ArrayList<>();
+        List<String> addCommonScript = new ArrayList<>();
+        List<String> addScript = new ArrayList<>();
+        addCss.add("member/style");//회원 공통 스타일
+        if (mode.equals("join")) {
+            addCommonScript.add("fileManager");
+            addCss.add("member/join");
+            addScript.add("member/join");
+        } else if (mode.equals("login")) {
+            addCss.add("member/login");
+        }
+        model.addAttribute("addCss", addCss);
+        model.addAttribute("addCommonScript", addCommonScript);
+        model.addAttribute("addScript", addScript);
+    }
+
     @ResponseBody
     @GetMapping("/test")
     public void test(Principal principal) {
         log.info("로그인 아이디 : {}", principal.getName());
-        log.info("{}",principal);
+        log.info("{}", principal);
     }
 
     @ResponseBody
@@ -102,6 +127,7 @@ public class MemberController implements ExceptionProcessor {
             log.info("getPrincipal() : {}", authentication.getName());
         }*/
     }
+
     @ResponseBody
     @GetMapping("/test4")
     public void test4() {
@@ -111,7 +137,7 @@ public class MemberController implements ExceptionProcessor {
 
     @ResponseBody
     @GetMapping("/test5")
-    public void test5(){
+    public void test5() {
         /*Board board = Board.builder()
                 .bId("freeTalk2")
                 .bName("자유게시판")
@@ -122,10 +148,11 @@ public class MemberController implements ExceptionProcessor {
         board.setBName("(수정)자유게시판");
         boardRepository.saveAndFlush(board);
     }
+
     @GetMapping("/test6")
     @ResponseBody
 //    @PreAuthorize("isAuthenticated()")//회원만 접근가능한 주소
-    public void test6(){
+    public void test6() {
         log.info("test6 - 회원만 접근 가능");
     }
 

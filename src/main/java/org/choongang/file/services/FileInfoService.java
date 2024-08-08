@@ -88,14 +88,15 @@ public class FileInfoService {
     public void addFileInfo(FileInfo item) {//파일 정보 추가(url, path)
         String fileUrl = getFileUrl(item);
         String filepath = getFilePath(item);
-
+        System.out.printf("fileUrl : %s\n", fileUrl);
+        System.out.printf("filepath : %s\n", filepath);
         item.setFileUrl(fileUrl);
         item.setFilePath(filepath);
     }
 
     // 브라우저 접근 주소
     public String getFileUrl(FileInfo item) {
-        return request.getContextPath() + properties.getUrl() + "/" + getFolder(item.getSeq()) + "/" + getFileName(item);
+        return request.getContextPath() + properties.getUrl() + getFolder(item.getSeq()) + "/" + getFileName(item);
     }
 
     //서버 업로드 경로

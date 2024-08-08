@@ -7,7 +7,8 @@ const fileManager = {
      * 파일 업로드
      *
      */
-    upload(files, gid, location) {
+    upload(files, options) {
+        const {gid, location, single, imageOnly, done} = options;
         try {
             if (!files || files.length == 0) {
                 throw new Error("파일을 선택 하세요.");
@@ -15,8 +16,24 @@ const fileManager = {
             if (!gid || !gid.trim()) {
                 throw new Error("필수 항목 누락입니다(gid).")
             }
+            // 단일 파일 업로드 체크
+            if (single && files.length > 1) {
+                throw new Error("하나의 파일만 업로드 하세요.")
+            }
+            //이미지 형식만 업로드 가능 체크
+            if (imageOnly) {
+                for (const file of files) {
+                    if (!file.type.includes("image/")) {
+                        throw new Error("이미지 형식만 업로드 하세요.")
+                    }
+                }
+            }
+
             const formData = new FormData();
             formData.append("gid", gid.trim());
+            formData.append("single", single);
+            formData.append("imageOnly", imageOnly);
+            formData.append("done", done);
 
             for (const file of files) {
                 formData.append("file", file);
@@ -33,7 +50,7 @@ const fileManager = {
                         return;
                     }
                     //파일 업로드 후 처리는 다양, fileUploadCallback 을 직접 상황에 맞게 정의 처리
-                    if (typeof parent.fileUploadCallback === 'function'){
+                    if (typeof parent.fileUploadCallback === 'function') {
                         parent.fileUploadCallback(res.data);
                     }
                 })
@@ -66,21 +83,33 @@ window.addEventListener("DOMContentLoaded", function () {
     fileEl.type = "file";
     fileEl.multiple = true;
 
+
     for (const el of fileUploads) {
         el.addEventListener("click", function () {
             fileEl.value = "";
             delete fileEl.gid
             delete fileEl.location;
+
             const dataset = this.dataset; //data- 친구들을  받아올 수 있음
             fileEl.gid = dataset.gid;
             if (dataset.location) fileEl.location = dataset.location;
-            console.log(fileEl.value)
+            fileEl.imageOnly = dataset.imageOnly === 'true';
+            fileEl.single = dataset.single === 'true';
+            fileEl.done = dataset.done === 'true';
+            if (fileEl.single) fileEl.multiple = false;
+            else fileEl.multiple = true;
             fileEl.click();
         });
     }
     //파일 업로드 버튼 이벤트 처리 E
     fileEl.addEventListener("change", function (e) {
         const files = e.target.files;
-        fileManager.upload(files, fileEl.gid, fileEl.location);
+        fileManager.upload(files, {
+            gid: fileEl.gid,
+            location: fileEl.location,
+            single: fileEl.single,
+            imageOnly: fileEl.imageOnly,
+            done: fileEl.done
+        });
     });
 });
