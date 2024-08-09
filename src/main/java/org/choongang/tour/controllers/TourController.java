@@ -3,17 +3,15 @@ package org.choongang.tour.controllers;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.choongang.global.ListData;
+import org.choongang.global.Utils;
+import org.choongang.global.exceptions.BadRequestException;
 import org.choongang.global.exceptions.ExceptionProcessor;
 import org.choongang.global.rests.gov.detailapi.DetailItem;
-import org.choongang.tour.constants.ContentType;
 import org.choongang.tour.entities.TourPlace;
 import org.choongang.tour.repositories.TourPlaceRepository;
 import org.choongang.tour.services.TourDetailInfoService;
 import org.choongang.tour.services.TourPlaceInfoService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +28,7 @@ public class TourController implements ExceptionProcessor {
     private final TourPlaceRepository tourPlaceRepository;
     private final TourPlaceInfoService placeInfoService;
     private final TourDetailInfoService detailInfoService;
-
+    private final Utils utils;
     @PersistenceContext
     private EntityManager em;
 
@@ -42,11 +40,33 @@ public class TourController implements ExceptionProcessor {
     }
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("title")));
-        Page<TourPlace> itemPage = tourPlaceRepository.findAll(pageable);
-        model.addAttribute("item", itemPage);
+    public String list(Model model, TourPlaceSearch search) {
+
+
+        ListData<TourPlace> data = placeInfoService.getTotalList(search);
+        model.addAttribute("items", data.getItems());
+        model.addAttribute("pagination", data.getPagination());
         return "front/tour/list";
+    }
+
+    @GetMapping("/list/{type}")
+    public String list(@PathVariable("type") String type, @RequestParam(value = "page", defaultValue = "10") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
+
+        try {
+            TourPlaceSearch search = TourPlaceSearch.builder()
+                    .page(page)
+                    .limit(size)
+                    .contentType(utils.typeCode(type))
+                    .build();
+            ListData<TourPlace> data = placeInfoService.getSearchedList(search);
+
+            model.addAttribute("items", data.getItems());
+            model.addAttribute("pagination", data.getPagination());
+            return "front/tour/list";
+        } catch (BadRequestException e) {
+            e.printStackTrace();
+            return "redirect:/tour/list";
+        }
     }
 
     @GetMapping("/detail/{contentId}")
@@ -57,19 +77,4 @@ public class TourController implements ExceptionProcessor {
         model.addAttribute("items", item);
         return "front/tour/detail";
     }
-
-    @GetMapping("/fest")
-    public String festlist(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
-        List<TourPlace> items = placeInfoService.getSearchedList(ContentType.Festival, page, size);
-        model.addAttribute("items", items);
-        return "front/tour/fest";
-    }
-
-    @GetMapping("/stay")
-    public String accomolist(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
-        List<TourPlace> items = placeInfoService.getSearchedList(ContentType.Accommodation,page,size);
-        model.addAttribute("items", items);
-        return "front/tour/stay";
-    }
-
 }

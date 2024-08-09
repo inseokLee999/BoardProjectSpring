@@ -5,9 +5,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.choongang.global.ListData;
+import org.choongang.global.Pagination;
 import org.choongang.global.rests.gov.api.ApiItem;
 import org.choongang.global.rests.gov.api.ApiResult;
-import org.choongang.tour.constants.ContentType;
 import org.choongang.tour.controllers.TourPlaceSearch;
 import org.choongang.tour.entities.QTourPlace;
 import org.choongang.tour.entities.TourPlace;
@@ -62,19 +63,34 @@ public class TourPlaceInfoService {
         return null;
     }
 
-    public List<TourPlace> getSearchedList(ContentType contentType) {
-
-        return getSearchedList(contentType,1,10);
-    }
-    public List<TourPlace> getSearchedList(ContentType contentType,int page,int limit){
+    public ListData<TourPlace> getTotalList(TourPlaceSearch search){
+        int page = Math.max(search.getPage(), 1);
+        int limit = search.getLimit();
+        limit = limit < 1 ? 10 : limit;
         int offset = (page - 1) * limit;
+
+        Pagination pagination = new Pagination(page,(int)repository.count(),0,limit);
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QTourPlace tourPlace = QTourPlace.tourPlace;
-        JPAQuery<TourPlace> query = queryFactory.selectFrom(tourPlace).where(tourPlace.contentTypeId.eq(contentType.getId()))
+        List<TourPlace> items = queryFactory.selectFrom(tourPlace)
+                .orderBy(tourPlace.contentId.asc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+        return new ListData<>(items, pagination);
+    }
+
+    public ListData<TourPlace> getSearchedList(TourPlaceSearch search) {
+        int offset = search.getPage();
+        int limit = search.getLimit();
+        Pagination pagination = new Pagination(offset,(int)repository.count(),0,limit);
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QTourPlace tourPlace = QTourPlace.tourPlace;
+        JPAQuery<TourPlace> query = queryFactory.selectFrom(tourPlace).where(tourPlace.contentTypeId.eq(search.getContentType().getId()))
                 .orderBy(tourPlace.contentId.asc())
                 .offset(offset)
                 .limit(limit);
         List<TourPlace> items = query.fetch();
-        return items;
+        return new ListData<>(items, pagination);
     }
 }

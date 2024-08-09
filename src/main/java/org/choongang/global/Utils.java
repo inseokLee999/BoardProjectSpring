@@ -3,6 +3,8 @@ package org.choongang.global;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.choongang.global.exceptions.BadRequestException;
+import org.choongang.tour.constants.ContentType;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
@@ -104,5 +106,27 @@ public class Utils { // 빈의 이름 - utils
 
     public String nl2br(String str) {
         return str.replaceAll("\\n", "<br>").replaceAll("\\r", "");
+    }
+
+    public ContentType typeCode(String type) {
+        switch (type) {
+            case("spot"):
+                return ContentType.TourSpot;
+            case("culture"):
+                return ContentType.CultureFacility;
+            case ("festival"):
+                return ContentType.Festival;
+            case("course"):
+                return ContentType.TourCourse;
+            case ("leports"):
+                return ContentType.Leports;
+            case ("stay"):
+                return ContentType.Accommodation;
+            case ("shopping"):
+                return ContentType.Shopping;
+            case("restaurant"):
+                return ContentType.Restaurant;
+        }
+        throw new BadRequestException("Wrong contentType");
     }
 }
