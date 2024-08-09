@@ -22,13 +22,14 @@ public class FileDeleteService {
 
     public FileInfo delete(Long seq) {
         FileInfo data = infoService.get(seq);
-
         String filePath = data.getFilePath();
         String createdBy = data.getCreateBy();//업로드한 회원 이메일
+
         Member member = memberUtil.getMember();
-        if (StringUtils.hasText(createdBy) && memberUtil.isLogin() && !member.getEmail().equals(createdBy)) {//파일 업로드가 없을 때
+        if (!memberUtil.isAdmin() && StringUtils.hasText(createdBy) && memberUtil.isLogin() && !member.getEmail().equals(createdBy)) {
             throw new UnAuthorizedException();
         }
+
         //파일 삭제
         File file = new File(filePath);
         if (file.exists()) {

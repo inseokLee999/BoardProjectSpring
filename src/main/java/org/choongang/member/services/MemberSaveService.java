@@ -22,7 +22,7 @@ public class MemberSaveService {
     private final MemberRepository memberRepository;
     private final AuthoritiesRepository authoritiesRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final FileUploadDoneService uploadDoneService;
     /**
      * 회원 가입 처리
      *
@@ -55,5 +55,7 @@ public class MemberSaveService {
                     .build()).toList();
             authoritiesRepository.saveAllAndFlush(items);
         }
+        //파일 업로드 완료 처리
+        uploadDoneService.process(member.getGid());
     }
 }

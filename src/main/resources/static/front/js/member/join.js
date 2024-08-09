@@ -8,7 +8,7 @@ function fileUploadCallback(files) {
     }
     const file = files[0];
     let html = document.getElementById("image-file-tpl").innerHTML;//목록 파일일때는 const 사용해서 치환?
-    html = html.replace(/\[seq=\]/g, file.seq)
+    html = html.replace(/\[seq\]/g, file.seq)
         .replace(/\[fileUrl\]/g, file.fileUrl);
 
     const domParser = new DOMParser();
@@ -28,4 +28,13 @@ function fileUploadCallback(files) {
         fileManager.delete(seq);//삭제
 
     });
+}
+
+/**
+ * 파일 삭제 후 후속 처리
+ * @param file
+ */
+function fileDeleteCallback(file) {
+    const targetEl = document.querySelector(".profile-image");
+    if (targetEl) targetEl.innerHTML = "";
 }

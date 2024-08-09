@@ -88,8 +88,6 @@ public class FileInfoService {
     public void addFileInfo(FileInfo item) {//파일 정보 추가(url, path)
         String fileUrl = getFileUrl(item);
         String filepath = getFilePath(item);
-        System.out.printf("fileUrl : %s\n", fileUrl);
-        System.out.printf("filepath : %s\n", filepath);
         item.setFileUrl(fileUrl);
         item.setFilePath(filepath);
     }

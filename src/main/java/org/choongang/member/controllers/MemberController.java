@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.choongang.board.entities.Board;
 import org.choongang.board.repositories.BoardRepository;
+import org.choongang.global.Utils;
 import org.choongang.global.exceptions.ExceptionProcessor;
 import org.choongang.member.MemberInfo;
-import org.choongang.member.MemberUtil;
 import org.choongang.member.services.MemberSaveService;
 import org.choongang.member.validators.JoinValidator;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +34,7 @@ public class MemberController implements ExceptionProcessor {
 
     private final JoinValidator joinValidator;
     private final MemberSaveService memberSaveService;
-    private final MemberUtil memberUtil;
+    private final Utils utils;
     private final BoardRepository boardRepository;
 
     @ModelAttribute
@@ -47,7 +47,7 @@ public class MemberController implements ExceptionProcessor {
         commonProcess("join", model);
 
 
-        return "front/member/join";
+        return utils.tpl("member/join");
     }
 
     @PostMapping("/join")
@@ -56,7 +56,7 @@ public class MemberController implements ExceptionProcessor {
         joinValidator.validate(form, errors);
 
         if (errors.hasErrors()) {
-            return "front/member/join";
+            return utils.tpl("member/join");
         }
         memberSaveService.save(form);
         return "redirect:/member/login";
@@ -73,7 +73,7 @@ public class MemberController implements ExceptionProcessor {
                 return "redirect:/member/password/reset ";
             }
         }
-        return "front/member/login";
+        return utils.tpl("member/login");
     }
 
     /**
@@ -126,13 +126,6 @@ public class MemberController implements ExceptionProcessor {
         } else { // 미로그인 상태 - String / anonymousUser (getPrincipal())
             log.info("getPrincipal() : {}", authentication.getName());
         }*/
-    }
-
-    @ResponseBody
-    @GetMapping("/test4")
-    public void test4() {
-        log.info("로그인 여부 : {}", memberUtil.isLogin());
-        log.info("로그인 회원z : {}", memberUtil.getMember());
     }
 
     @ResponseBody
