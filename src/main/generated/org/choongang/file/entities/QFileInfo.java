@@ -26,6 +26,12 @@ public class QFileInfo extends EntityPathBase<FileInfo> {
     //inherited
     public final StringPath createBy = _super.createBy;
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+
     public final BooleanPath done = createBoolean("done");
 
     public final StringPath extenstion = createString("extenstion");
@@ -35,6 +41,9 @@ public class QFileInfo extends EntityPathBase<FileInfo> {
     public final StringPath gid = createString("gid");
 
     public final StringPath location = createString("location");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;

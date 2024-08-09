@@ -67,4 +67,8 @@ public class Utils { // 빈의 이름 - utils
 
         return messages.isEmpty() ? code : messages.get(0);
     }
+
+    public String nl2br(String str) {
+        return str.replaceAll("\\n", "<br>").replaceAll("\\r", "");
+    }
 }
