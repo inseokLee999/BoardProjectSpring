@@ -3,8 +3,6 @@ package org.choongang.member.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.choongang.board.entities.Board;
-import org.choongang.board.repositories.BoardRepository;
 import org.choongang.global.Utils;
 import org.choongang.global.exceptions.ExceptionProcessor;
 import org.choongang.member.MemberInfo;
@@ -35,7 +33,6 @@ public class MemberController implements ExceptionProcessor {
     private final JoinValidator joinValidator;
     private final MemberSaveService memberSaveService;
     private final Utils utils;
-    private final BoardRepository boardRepository;
 
     @ModelAttribute
     public RequestLogin requestLogin() {
@@ -128,19 +125,19 @@ public class MemberController implements ExceptionProcessor {
         }*/
     }
 
-    @ResponseBody
+/*    @ResponseBody
     @GetMapping("/test5")
     public void test5() {
-        /*Board board = Board.builder()
+        *//*Board board = Board.builder()
                 .bId("freeTalk2")
                 .bName("자유게시판")
                 .build();
-        boardRepository.saveAndFlush(board);*/
+        boardRepository.saveAndFlush(board);*//*
         Board board = boardRepository.findById("freeTalk2").orElse(null);
 
         board.setBName("(수정)자유게시판");
         boardRepository.saveAndFlush(board);
-    }
+    }*/
 
     @GetMapping("/test6")
     @ResponseBody
