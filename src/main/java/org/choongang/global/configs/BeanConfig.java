@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class BeanConfig {
     private final EntityManager em;
 
+    @Bean
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(em);
     }

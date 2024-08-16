@@ -1,10 +1,10 @@
 package org.choongang.tour.controllers;
 
 import lombok.Data;
-import org.choongang.global.RequestPage;
+import org.choongang.global.CommonSearch;
 
 @Data
-public class TourPlace2Search extends RequestPage {
+public class TourPlace2Search extends CommonSearch {
     /**
      * ALL - 통합 검색 - title, tel, address, description
      * TITLE, TEL, ADDRESS, DESCRIPTION
