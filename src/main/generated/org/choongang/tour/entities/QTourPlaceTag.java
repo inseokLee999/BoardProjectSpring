@@ -20,7 +20,7 @@ public class QTourPlaceTag extends EntityPathBase<TourPlaceTag> {
 
     public static final QTourPlaceTag tourPlaceTag = new QTourPlaceTag("tourPlaceTag");
 
-    public final ListPath<TourPlace, QTourPlace> items = this.<TourPlace, QTourPlace>createList("items", TourPlace.class, QTourPlace.class, PathInits.DIRECT2);
+    public final ListPath<TourPlace2, QTourPlace2> items = this.<TourPlace2, QTourPlace2>createList("items", TourPlace2.class, QTourPlace2.class, PathInits.DIRECT2);
 
     public final StringPath tag = createString("tag");
 

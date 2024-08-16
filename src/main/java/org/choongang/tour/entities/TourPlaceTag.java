@@ -19,5 +19,5 @@ public class TourPlaceTag {
     @JsonIgnore // JSON 문자열 변환시 순환참조 방지
     @ToString.Exclude // 롬복 toString() 호출 시 순환참조 방지
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private List<TourPlace> items;
+    private List<TourPlace2> items;
 }
