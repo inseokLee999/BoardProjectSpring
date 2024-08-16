@@ -86,8 +86,10 @@ public class TourPlaceInfoService {
     }
 
     public ListData<TourPlace> getSearchedList(TourPlaceSearch search) {
-        int offset = search.getPage();
+        int page = Math.max(search.getPage(), 1);
         int limit = search.getLimit();
+        limit = limit < 1 ? 20 : limit;
+        int offset = page * limit + 1;
 
         /* 검색 조건 처리 S */
         QTourPlace tourPlace = QTourPlace.tourPlace;

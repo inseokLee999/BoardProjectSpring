@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.choongang.global.RequestPage;
 import org.choongang.tour.constants.ContentType;
 
 import java.util.List;
@@ -12,10 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TourPlaceSearch {
+public class TourPlaceSearch extends RequestPage {
 
-    private int page=1;
-    private int limit=10; // 0 : 설정에 있는 1페이지 게시글 갯수, 1 이상 -> 지정한 갯수
     /**
      * 필터 옵션
      *
