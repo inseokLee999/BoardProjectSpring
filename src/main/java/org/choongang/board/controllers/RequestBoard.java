@@ -22,6 +22,8 @@ public class RequestBoard {
     private String subject;
     @NotBlank
     private String content;
+
+    private boolean guest;//비회원 인지?
     private String guestPw;// 비회원 비밀 번호(수정, 삭제)
 
     private Long num1;
